@@ -191,7 +191,7 @@ def random(array):
     def assing(lambdas):
         for i in range(1, 100):
             aux.append(i)
-        for j in aux:
+        for _ in aux:
             random_wave = np.random.choice(aux, size=1)
             wave_lenght = random_wave[0]
 
