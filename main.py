@@ -1,9 +1,7 @@
-import random
-import numpy as np
-
 from dijkstra import DijkstraSPF, Graph
 import data
 import tabelas
+import numpy as np
 
 # cria o dicionário para o dijkstra com base nos caminhos e nas ligações
 
@@ -18,13 +16,11 @@ graph = Graph(data.t1_adjacency_list, edge_weights)
 '''
 
 combs = []
-for a, y in data.c239_adjacency_list.items():
+for a, y in data.c239_adjacent_list.items():
     for z in y:
         combs.append((a, z))
-
 edge_weights = dict(zip(combs, data.c239_length))
-
-graph = Graph(data.c239_adjacency_list, edge_weights)
+graph = Graph(data.c239_adjacent_list, edge_weights)
 
 
 # encontra os caminhos mais curtos para qq nos (não tem matriz de trafego)
@@ -53,7 +49,6 @@ def get_paths(adjacency, graf, matrix=False):
 
     else:
         for i, j in enumerate(matrix):
-            print(i, j)
             for s, k in enumerate(j):  # enumera os valores da linha da matriz
                 if k != 0:
                     dijkstra = DijkstraSPF(graf, i + 1)
@@ -78,23 +73,23 @@ def get_paths(adjacency, graf, matrix=False):
 
 # spf_list = get_paths(data.t1_adjacency_list, graph, data.t1_traffic_matrix)
 
-spf_list = get_paths(data.c239_adjacency_list, graph)
+spf_list = get_paths(data.c239_adjacent_list, graph)
+print(spf_list)
 
 
-# print(spf_list)
 # tabelas.tabelas(spf_list, ["path", "km"])
 
 
 # tabelas.tabelas(data.t1_traffic_matrix, [i for i in range(1, 7)], [i for i in range(1, 7)])
 
-
-# fazer lambdas e nao copiar do rodrigo
 def deconstruct(paths):
     out = []
     for j in range(len(paths) - 1):
         out.append([paths[j], paths[j + 1]])
     return out
 
+
+# ----------------------------------------------------------------------#
 
 def first_fit(array):
     paths = []
@@ -137,7 +132,7 @@ def first_fit(array):
 
 # ----------------------------------------------------------------------#
 
-def most_used2(array):
+def most_used(array):
     paths = []
     dicti = dict()
     og_dict = dict()
@@ -181,6 +176,8 @@ def most_used2(array):
 
     print("This is the Lambdas: ", og_dict)
 
+
+# ----------------------------------------------------------------------#
 
 def random(array):
     paths = []
@@ -231,5 +228,5 @@ def random(array):
 
 
 first_fit(spf_list)
-most_used2(spf_list)
+most_used(spf_list)
 random(spf_list)
