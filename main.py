@@ -159,10 +159,10 @@ def most_used(array):
         for i in deconstruct(path):
             for l in dicti[flipped(tuple(i))]:
                 lambdas.append(l)
-            ff = used(lambdas)
-            dicti[flipped(tuple(i))].append(ff)
+            mostuse = used(lambdas)
+            dicti[flipped(tuple(i))].append(mostuse)
         lambdas.clear()
-        og_dict[tuple(path)].append(ff)
+        og_dict[tuple(path)].append(mostuse)
 
     print("This is the Most Used: ", og_dict)
 
@@ -204,10 +204,10 @@ def random(array):
         for i in deconstruct(path):
             for l in dicti[flipped(tuple(i))]:
                 lambdas.append(l)
-            ff = assing(lambdas)
-            dicti[flipped(tuple(i))].append(ff)
+            ran = assing(lambdas)
+            dicti[flipped(tuple(i))].append(ran)
         lambdas.clear()
-        og_dict[tuple(path)].append(ff)
+        og_dict[tuple(path)].append(ran)
 
     print("This is the Random:    ", og_dict)
 
