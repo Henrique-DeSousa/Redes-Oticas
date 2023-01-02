@@ -39,26 +39,24 @@ def get_paths(adjacency, graf, matrix=False):
     """
 
     spf = []
-    if not matrix:
+    if not matrix:  # encontra os caminhos mais curtos para qualquer no
         for i in range(1, len(adjacency.keys()) + 1):
             for j in range(1, len(adjacency.keys()) + 1):
                 dijkstra = DijkstraSPF(graf, i)
                 spf.append((dijkstra.get_path(j), dijkstra.get_distance(j)))
 
-        # encontra os caminhos mais curtos para qq nos com base na matrix de tráfego
-
-    else:
+    else:  # encontra os caminhos mais curtos para qualquer no baseado na matrix
         for i, j in enumerate(matrix):
             for s, k in enumerate(j):  # enumera os valores da linha da matriz
                 if k != 0:
                     dijkstra = DijkstraSPF(graf, i + 1)
                     spf.append((dijkstra.get_path(s + 1), dijkstra.get_distance(s + 1)))
-
-    # shortest path first (ordena por distancia, em caso de empate pelo numero de nós -- menos nos aparecem primeiro)
+    # shortest path first (ordena por distancia, em caso de empate pelo numero de nós
+    # menos nos aparecem primeiro)
     spf.sort(key=lambda var: (var[1], len(var[0])))
 
-    # remove as duplicadas pk esta lib de dijsktra é unidirecional precisamos de meter os dois caminhos ex. (1,2) e (2,1)
-    # pode dar problemas se o dijkstra nao der o mesmo caminho para 25 e 52 (deve estar resolvido)
+    # remove as duplicadas pk esta lib de dijsktra é unidirecional precisamos de meter os dois caminhos ex. (1,
+    # 2) e (2,1) pode dar problemas se o dijkstra nao der o mesmo caminho para 2,5 e 5,2
 
     plh = [b for b in spf if b[1] != 0]
 
@@ -71,16 +69,11 @@ def get_paths(adjacency, graf, matrix=False):
     return plh
 
 
-# spf_list = get_paths(data.t1_adjacency_list, graph, data.t1_traffic_matrix)
-
 spf_list = get_paths(data.c239_adjacent_list, graph)
-print(spf_list)
-
-
+# spf_list = get_paths(data.t1_adjacency_list, graph, data.t1_traffic_matrix)
 # tabelas.tabelas(spf_list, ["path", "km"])
-
-
 # tabelas.tabelas(data.t1_traffic_matrix, [i for i in range(1, 7)], [i for i in range(1, 7)])
+
 
 def deconstruct(paths):
     out = []
@@ -89,7 +82,15 @@ def deconstruct(paths):
     return out
 
 
+def flipped(key):
+    for i in spf_list:
+        if list(key) in i:
+            return key
+    return key[::-1]
+
+
 # ----------------------------------------------------------------------#
+
 
 def first_fit(array):
     paths = []
@@ -100,12 +101,6 @@ def first_fit(array):
         for g in range(1, 100):
             if g not in arrays:
                 return g
-
-    def flipped(key):
-        for i in spf_list:
-            if list(key) in i:
-                return key
-        return key[::-1]
 
     # dicionário
     for i in array:
@@ -127,10 +122,11 @@ def first_fit(array):
         og_dicti[tuple(path)].append(ff)
         lambdas.clear()
 
-    print("This is the GOAT: ", og_dicti)
+    print("This is the First-Fit: ", og_dicti)
 
 
 # ----------------------------------------------------------------------#
+
 
 def most_used(array):
     paths = []
@@ -147,12 +143,6 @@ def most_used(array):
                 var = var + 1
                 lamda_dict[i] = var
                 return i
-
-    def flipped(key):
-        for i in spf_list:
-            if list(key) in i:
-                return key
-        return key[::-1]
 
     # dicionário
     for i in array:
@@ -174,10 +164,11 @@ def most_used(array):
         lambdas.clear()
         og_dict[tuple(path)].append(ff)
 
-    print("This is the Lambdas: ", og_dict)
+    print("This is the Most Used: ", og_dict)
 
 
 # ----------------------------------------------------------------------#
+
 
 def random(array):
     paths = []
@@ -190,19 +181,13 @@ def random(array):
             aux.append(i)
         for _ in aux:
             random_wave = np.random.choice(aux, size=1)
-            wave_lenght = random_wave[0]
+            wave_length = random_wave[0]
 
-            if wave_lenght not in lambdas:
+            if wave_length not in lambdas:
                 aux.clear()
-                return wave_lenght
+                return wave_length
             else:
-                aux.remove(wave_lenght)
-
-    def flipped(key):
-        for i in spf_list:
-            if list(key) in i:
-                return key
-        return key[::-1]
+                aux.remove(wave_length)
 
     # dicionário
     for i in array:
@@ -224,7 +209,7 @@ def random(array):
         lambdas.clear()
         og_dict[tuple(path)].append(ff)
 
-    print("This is the Random: ", og_dict)
+    print("This is the Random:    ", og_dict)
 
 
 first_fit(spf_list)
